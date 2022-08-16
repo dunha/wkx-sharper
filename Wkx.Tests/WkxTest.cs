@@ -63,6 +63,15 @@ namespace Wkx.Tests
 
         [Theory]
         [MemberData(nameof(TestData))]
+        public void ParseSpatialite(TestCase testCase)
+        {
+            if (testCase.Data.Spatialite == null)
+                throw new Xunit.Sdk.XunitException("No test data for Spatialite");
+            ParseTest<SpatialiteSerializer>(testCase, t => t.Spatialite, true);
+        }
+
+        [Theory]
+        [MemberData(nameof(TestData))]
         public void ParseEwkbXdr(TestCase testCase)
         {
             ParseTest<EwkbSerializer>(testCase, t => t.EwkbXdr, true);
@@ -108,6 +117,15 @@ namespace Wkx.Tests
         public void ToEwkb(TestCase testCase)
         {
             SerializeTest(testCase, g => g.SerializeByteArray<EwkbSerializer>(), t => t.Ewkb.ToByteArray());
+        }
+
+        [Theory]
+        [MemberData(nameof(TestData))]
+        public void ToSpatialite(TestCase testCase)
+        {
+            if (testCase.Data.Spatialite == null)
+                throw new Xunit.Sdk.XunitException("No test data for Spatialite");
+            SerializeTest(testCase, g => g.SerializeByteArray<SpatialiteSerializer>(), t => t.Spatialite.ToByteArray());
         }
 
         [Theory]
