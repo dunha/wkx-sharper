@@ -3,17 +3,18 @@ using System.IO;
 
 namespace Wkx
 {
-    internal class SpatialiteReader
+    internal class SpatialiteReader : WkbReader
     {
-        protected EndianBinaryReader wkbReader;
+        //protected EndianBinaryReader wkbReader;
 
         internal SpatialiteReader(Stream stream)
+            : base(stream)
         {
-            wkbReader = new EndianBinaryReader(stream);
+            //wkbReader = new EndianBinaryReader(stream);
         }
 
 
-        internal Geometry Read()
+        internal new Geometry Read()
         {
 
             if (wkbReader.BaseStream.Position > 0)
@@ -76,27 +77,27 @@ namespace Wkx
             return geometry;
         }
 
-        protected virtual GeometryType ReadGeometryType(uint type)
-        {
-            return (GeometryType)(type % 1000);
-        }
+        //protected virtual GeometryType ReadGeometryType(uint type)
+        //{
+        //    return (GeometryType)(type % 1000);
+        //}
 
-        protected virtual Dimension ReadDimension(uint type)
-        {
-            if (type >= 1000 && type < 2000)
-                return Dimension.Xyz;
-            else if (type >= 2000 && type < 3000)
-                return Dimension.Xym;
-            else if (type >= 3000 && type < 4000)
-                return Dimension.Xyzm;
+        //protected virtual Dimension ReadDimension(uint type)
+        //{
+        //    if (type >= 1000 && type < 2000)
+        //        return Dimension.Xyz;
+        //    else if (type >= 2000 && type < 3000)
+        //        return Dimension.Xym;
+        //    else if (type >= 3000 && type < 4000)
+        //        return Dimension.Xyzm;
 
-            return Dimension.Xy;
-        }
+        //    return Dimension.Xy;
+        //}
 
-        protected virtual int? ReadSrid(uint type)
-        {
-            return null;
-        }
+        //protected virtual int? ReadSrid(uint type)
+        //{
+        //    return null;
+        //}
 
         private T Read<T>() where T : Geometry
         {
@@ -201,6 +202,6 @@ namespace Wkx
         }
 
     }
-#endregion
+    #endregion
 
 }

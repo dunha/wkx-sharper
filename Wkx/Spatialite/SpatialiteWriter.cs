@@ -3,16 +3,16 @@ using System.IO;
 
 namespace Wkx
 {
-    internal class SpatialiteWriter
+    internal class SpatialiteWriter : WkbWriter
     {
 
         bool firstRun = true;
 
-        protected static readonly byte[] doubleNaN = new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf8, 0x7f };
+        //protected static readonly byte[] doubleNaN = new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf8, 0x7f };
 
-        protected BinaryWriter wkbWriter;
+        //protected BinaryWriter wkbWriter;
 
-        internal byte[] Write(Geometry geometry)
+        internal new byte[] Write(Geometry geometry)
         {
             using (MemoryStream memoryStream = new MemoryStream())
             {
@@ -25,7 +25,7 @@ namespace Wkx
         }
 
 
-        protected void WriteInternal(Geometry geometry, Geometry parentGeometry = null)
+        private void WriteInternal(Geometry geometry, Geometry parentGeometry = null)
         {
             // Write header
             if (firstRun)
@@ -42,7 +42,7 @@ namespace Wkx
                 firstRun = false;
             }
             var dimension = parentGeometry != null ? parentGeometry.Dimension : geometry.Dimension;
-            WriteWkbType(geometry.GeometryType, dimension);
+            WriteWkbType(geometry.GeometryType, dimension, null);
             WriteWkbGeometry(geometry, dimension);
 
 
@@ -58,7 +58,7 @@ namespace Wkx
 
 
 
-        private protected void WriteWkbGeometry(Geometry geometry, Dimension dimension)
+        protected void WriteWkbGeometry(Geometry geometry, Dimension dimension)
         {
             switch (geometry.GeometryType)
             {
@@ -83,18 +83,18 @@ namespace Wkx
 
         }
 
-        private void WriteWkbType(GeometryType geometryType, Dimension dimension)
-        {
-            uint dimensionType = 0;
+        //private void WriteWkbType(GeometryType geometryType, Dimension dimension)
+        //{
+        //    uint dimensionType = 0;
 
-            switch (dimension)
-            {
-                case Dimension.Xyz: dimensionType = 1000; break;
-                case Dimension.Xym: dimensionType = 2000; break;
-                case Dimension.Xyzm: dimensionType = 3000; break;
-            }
-            wkbWriter.Write((uint)(dimensionType + (uint)geometryType));
-        }
+        //    switch (dimension)
+        //    {
+        //        case Dimension.Xyz: dimensionType = 1000; break;
+        //        case Dimension.Xym: dimensionType = 2000; break;
+        //        case Dimension.Xyzm: dimensionType = 3000; break;
+        //    }
+        //    wkbWriter.Write((uint)(dimensionType + (uint)geometryType));
+        //}
 
         private void WritePoint(Point point, Dimension dimension)
         {
