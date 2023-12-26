@@ -10,5 +10,7 @@
     <PackageProjectUrl>https://github.com/cschwarz/wkx-sharp</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/cschwarz/wkx-sharp/master/LICENSE</PackageLicenseUrl>
     <Company>Christian Schwarz</Company>
+    <AssemblyVersion>1.1.10.0</AssemblyVersion>
+    <FileVersion>1.1.10.0</FileVersion>
   </PropertyGroup>
 </Project>

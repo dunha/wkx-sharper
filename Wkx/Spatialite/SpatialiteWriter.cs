@@ -43,7 +43,7 @@ namespace Wkx
             }
             var dimension = parentGeometry != null ? parentGeometry.Dimension : geometry.Dimension;
             WriteWkbType(geometry.GeometryType, dimension);
-            WriteWkbGeometry(geometry, geometry.GeometryType, dimension);
+            WriteWkbGeometry(geometry, dimension);
 
 
         }
@@ -58,7 +58,7 @@ namespace Wkx
 
 
 
-        private protected void WriteWkbGeometry(Geometry geometry, GeometryType geometryType, Dimension dimension)
+        private protected void WriteWkbGeometry(Geometry geometry, Dimension dimension)
         {
             switch (geometry.GeometryType)
             {

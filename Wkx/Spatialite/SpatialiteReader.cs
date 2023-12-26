@@ -21,17 +21,17 @@ namespace Wkx
             int? geomStart = wkbReader.ReadByte();
             wkbReader.IsBigEndian = !wkbReader.ReadBoolean();
             int? srid = wkbReader.ReadInt32();
-            double? minX = wkbReader.ReadDouble();
-            double? minY = wkbReader.ReadDouble();
-            double? maxX = wkbReader.ReadDouble();
-            double? maxY = wkbReader.ReadDouble();
+            _ = wkbReader.ReadDouble();
+            _ = wkbReader.ReadDouble();
+            _ = wkbReader.ReadDouble();
+            _ = wkbReader.ReadDouble();
             int? geomEnd = wkbReader.ReadByte();
             if (geomStart != 0x0 || geomEnd != 0x7C) return null;
             uint type = wkbReader.ReadUInt32();
             GeometryType geometryType = ReadGeometryType(type);
             Dimension dimension = ReadDimension(type);
 
-            Geometry geometry = getGeometryType(geometryType, dimension);
+            Geometry geometry = GetGeometryType(geometryType, dimension);
             geometry.Dimension = dimension;
             geometry.Srid = srid;
             return geometry;
@@ -44,15 +44,15 @@ namespace Wkx
             uint type = wkbReader.ReadUInt32();
             GeometryType geometryType = ReadGeometryType(type);
             Dimension dimension = ReadDimension(type);
-            Geometry geometry = getGeometryType(geometryType, dimension);
+            Geometry geometry = GetGeometryType(geometryType, dimension);
             geometry.Dimension = dimension;
             return geometry;
         }
 
         #region wkb
-        private protected Geometry getGeometryType(GeometryType geometryType, Dimension dimension)
+        private protected Geometry GetGeometryType(GeometryType geometryType, Dimension dimension)
         {
-            Geometry geometry = null;
+            Geometry geometry;
             switch (geometryType)
             {
                 case GeometryType.Point: geometry = ReadPoint(dimension); break;
