@@ -32,7 +32,7 @@ namespace Wkx
             {
                 wkbWriter.Write(false);
                 wkbWriter.Write(true);
-                wkbWriter.Write(geometry.Srid.Value);
+                wkbWriter.Write(geometry.Srid.HasValue ? geometry.Srid.Value : 0);
                 var mbr = geometry.GetBoundingBox();
                 wkbWriter.Write((double)mbr.XMin);
                 wkbWriter.Write((double)mbr.YMin);
@@ -42,7 +42,7 @@ namespace Wkx
                 firstRun = false;
             }
             var dimension = parentGeometry != null ? parentGeometry.Dimension : geometry.Dimension;
-            WriteWkbType(geometry.GeometryType, dimension, null);
+            WriteWkbType(geometry.GeometryType, dimension, geometry.Srid);
             WriteWkbGeometry(geometry, dimension);
 
 
@@ -83,18 +83,18 @@ namespace Wkx
 
         }
 
-        //private void WriteWkbType(GeometryType geometryType, Dimension dimension)
-        //{
-        //    uint dimensionType = 0;
+        protected override void WriteWkbType(GeometryType geometryType, Dimension dimension, int? srid)
+        {
+            uint dimensionType = 0;
 
-        //    switch (dimension)
-        //    {
-        //        case Dimension.Xyz: dimensionType = 1000; break;
-        //        case Dimension.Xym: dimensionType = 2000; break;
-        //        case Dimension.Xyzm: dimensionType = 3000; break;
-        //    }
-        //    wkbWriter.Write((uint)(dimensionType + (uint)geometryType));
-        //}
+            switch (dimension)
+            {
+                case Dimension.Xyz: dimensionType = 1000; break;
+                case Dimension.Xym: dimensionType = 2000; break;
+                case Dimension.Xyzm: dimensionType = 3000; break;
+            }
+            wkbWriter.Write((uint)(dimensionType + (uint)geometryType));
+        }
 
         private void WritePoint(Point point, Dimension dimension)
         {
