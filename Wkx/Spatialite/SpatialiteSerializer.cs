@@ -11,6 +11,8 @@ namespace Wkx
 
         public void Serialize(Geometry geometry, Stream stream)
         {
+            if (!geometry.Srid.HasValue)
+                geometry.Srid = 0;
             byte[] buffer = new SpatialiteWriter().Write(geometry);
             stream.Write(buffer, 0, buffer.Length);
         }
