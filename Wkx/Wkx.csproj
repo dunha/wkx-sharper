@@ -13,4 +13,10 @@
     <AssemblyVersion>1.1.10.0</AssemblyVersion>
     <FileVersion>1.1.10.0</FileVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Shapefile\Shapefile.cs" />
+    <Compile Remove="Shapefile\ShapefileFlags.cs" />
+    <Compile Remove="Shapefile\ShapefileHeader.cs" />
+    <Compile Remove="Shapefile\ShapefileIndex.cs" />
+  </ItemGroup>
 </Project>

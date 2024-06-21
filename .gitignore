@@ -4,3 +4,7 @@
 bin
 obj
 launchSettings.json
+/Wkx/Shapefile/Shapefile.cs
+/Wkx/Shapefile/ShapefileFlags.cs
+/Wkx/Shapefile/ShapefileHeader.cs
+/Wkx/Shapefile/ShapefileIndex.cs
