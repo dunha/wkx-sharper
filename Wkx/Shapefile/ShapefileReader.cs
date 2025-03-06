@@ -14,14 +14,6 @@ namespace Wkx
 {
     internal class ShapefileReader : WkbReader
     {
-        public int? Srid { get; set; }
-        //public bool HasM { get; set; }
-        //public bool HasZ { get; set; }
-
-        //private Record record = new Record();
-        //private bool valid = false;
-        //private bool hasM = false;
-        //private Dimension wkxDimension;
         private const double NODATAMAX = -1E+38;
 
         internal ShapefileReader(Stream stream)
@@ -29,21 +21,11 @@ namespace Wkx
         {
         }
 
-        internal ShapefileReader(Stream stream, int? srid)
-            : base(stream)
-        {
-            Srid = srid;
-        }
 
         internal new Geometry Read()
         {
-            //if ( !valid) Header = ReadHeader();
-            //valid = true;
-            //wkbReader.IsBigEndian = false;
-            //var recordNumber = wkbReader.ReadInt32();
-            //var contentLengthWords = wkbReader.ReadInt32();
-            //var contentLengthBytes = contentLengthWords * 2;
             wkbReader.IsBigEndian = false;
+            var srid = wkbReader.ReadInt32();
             var esriType = wkbReader.ReadInt32();
             var (geometryType, dimension) = GetGeometryType(esriType);
 
@@ -54,20 +36,9 @@ namespace Wkx
                 case GeometryType.LineString: geometry = ReadLine(dimension); break;
                 case GeometryType.Polygon: geometry = ReadPolygon(dimension); break;
                 case GeometryType.MultiPoint: geometry = ReadMultiPoint(dimension); break;
-                //case GeometryType.MultiLineString: geometry = ReadMultiLineString(geom.dimension); break;
-                //case GeometryType.MultiPolygon: geometry = ReadMultiPolygon(geom.dimension); break;
-                // Not supported by Spatialite
-                //case GeometryType.GeometryCollection: geometry = ReadGeometryCollection(dimension); break;
-                //case GeometryType.CircularString: geometry = ReadCircularString(dimension); break;
-                //case GeometryType.CompoundCurve: geometry = ReadCompoundCurve(dimension); break;
-                //case GeometryType.CurvePolygon: geometry = ReadCurvePolygon(dimension); break;
-                //case GeometryType.MultiCurve: geometry = ReadMultiCurve(dimension); break;
-                //case GeometryType.MultiSurface: geometry = ReadMultiSurface(dimension); break;
-                //case GeometryType.PolyhedralSurface: geometry = ReadPolyhedralSurface(dimension); break;
-                //case GeometryType.Tin: geometry = ReadTin(dimension); break;
-                //case GeometryType.Triangle: geometry = ReadTriangle(dimension); break;
                 default: throw new NotSupportedException(geometryType.ToString());
             }
+            geometry.Srid = srid;
             return geometry;
         }
 
@@ -104,36 +75,6 @@ namespace Wkx
             //return (GeometryType)(type & 0XFF);
         }
 
-        //protected GeometryType ReadGeometryType(uint esriType, uint partCount)
-        //{
-        //    var type = esriType % 10;
-        //    switch (type)
-        //    {
-        //        case 0: throw new IndexOutOfRangeException("Null shapes not supported");
-        //        case 1: return GeometryType.Point;
-        //        case 3: 
-        //            return partCount == 1 ? GeometryType.LineString : GeometryType.MultiLineString ;
-        //        case 5: 
-        //            return partCount == 1 ? GeometryType.Polygon : GeometryType.MultiPolygon ;
-        //        case 8: 
-        //            return GeometryType.MultiPoint;
-        //        default:
-        //            throw new IndexOutOfRangeException("Unsupported Shape type");
-
-        //    }
-
-        //    //return (GeometryType)(type & 0XFF);
-        //}
-
-        //protected Dimension ReadDimension(double[] envelope)
-        //{
-        //    var z = envelope[4] + envelope[5];
-        //    var m = envelope[6] + envelope[7];
-        //    if (z > 0 & m > NODATAMAX) return Dimension.Xyzm;
-        //    if (z > 0 & m < NODATAMAX) return Dimension.Xyz;
-        //    if (z == 0 & m > 0) return Dimension.Xym;
-        //    return Dimension.Xy;
-        //}
 
         protected override Dimension ReadDimension(uint esriType)
         {
@@ -146,14 +87,6 @@ namespace Wkx
                 default:
                     throw new IndexOutOfRangeException("Unsupported Dimension type");
             }
-            //if ((type & EwkbFlags.HasZ) == EwkbFlags.HasZ && (type & EwkbFlags.HasM) == EwkbFlags.HasM)
-            //    return Dimension.Xyzm;
-            //else if ((type & EwkbFlags.HasZ) == EwkbFlags.HasZ)
-            //    return Dimension.Xyz;
-            //else if ((type & EwkbFlags.HasM) == EwkbFlags.HasM)
-            //    return Dimension.Xym;
-
-            //return Dimension.Xy;
         }
 
 
@@ -377,134 +310,6 @@ namespace Wkx
         }
 
 
-        //private LineString ReadLineString(Dimension dimension)
-        //{
-        //    LineString lineString = new LineString();
-
-        //    //uint pointCount = wkbReader.ReadUInt32();
-        //    for (int i = 0; i < points.Count; i++)
-        //        lineString.Points.Add(MakePoint(dimension, points[i]));
-        //    return lineString;
-        //}
-
-
-        //private Polygon ReadPolygon(Dimension dimension)
-        //{
-        //    var record = ReadLinearRecord(dimension);
-        //    var rings = new List<LinearRing>();
-        //    //var exteriorRings = new List<LinearRing>();
-        //    //var holes = new List<LinearRing>();
-        //    //var polys = new List<List<LinearRing>>();
-        //    if (record.PartCount == 0) return null;
-        //    for (int i = 0; i < record.PartCount; i++)
-        //    {
-        //        rings.Add(new LinearRing(record.Points.GetRange(record.Parts[0], record.Parts[i+1] - record.Parts[i])));
-        //    }
-        //    PolygonFunctions.OrganizePolygonRings(rings)
-        //    foreach (var ring in rings)
-        //    {
-        //        if(IsCCW(ring))
-        //        {
-        //            holes.Add(ring);
-        //        }
-        //        else
-        //        {
-        //            exteriorRings.Add(ring);
-        //        }
-
-        //    }
-            
-
-
-
-            //Polygon polygon = new Polygon();
-
-            //uint ringCount = wkbReader.ReadUInt32();
-
-            //if (ringCount > 0)
-            //{
-            //    uint exteriorRingCount = wkbReader.ReadUInt32();
-            //    for (int i = 0; i < exteriorRingCount; i++)
-            //        polygon.ExteriorRing.Points.Add(ReadPoint(dimension));
-
-            //    for (int i = 1; i < ringCount; i++)
-            //    {
-            //        polygon.InteriorRings.Add(new LinearRing());
-
-            //        uint interiorRingCount = wkbReader.ReadUInt32();
-            //        for (int j = 0; j < interiorRingCount; j++)
-            //            polygon.InteriorRings[i - 1].Points.Add(ReadPoint(dimension));
-            //    }
-            //}
-            //if (dimension == Dimension.Xyzm && polygon.ExteriorRing.Points.TrueForAll(p => p.M == 0) )
-            //{
-                //if (polygon.InteriorRings.Count > 0 && (polygon.InteriorRings.TrueForAll(pg => pg.Points.TrueForAll(p => p.M == 0))))
-                //{
-
-                //}
-                //var pg = new Polygon();
-                //pg.Dimension = Dimension.Xyz; 
-                //foreach (var p in lineString.Points)
-                //{
-                //    ls.Points.Add(new Point((double)p.X, (double)p.Y, p.Z, null));
-                //    return ls;
-                //}
-        //    }
-
-        //    return polygon;
-        //}
-
-        //private MultiLineString ReadMultiLineString(Dimension dimension)
-        //{
-        //    MultiLineString multiLineString = new MultiLineString();
-
-        //    uint lineStringCount = wkbReader.ReadUInt32();
-        //    var points = record.Points;
-        //    for (int i = 0; i < record.Parts.Length; i++)
-        //    {
-        //        var line = points.Take(record.Parts[i + 1] - record.Parts[i]);
-        //        multiLineString.Geometries.Add(Read<LineString>());
-        //    }
-                
-
-        //    return multiLineString;
-        //}
-
-        //private MultiLineString ReadMultiLineString(LinearShapeRecord record)
-        //{
-        //    MultiLineString multiLineString = new MultiLineString();
-
-        //    uint lineStringCount = wkbReader.ReadUInt32();
-
-        //    for (int i = 0; i < lineStringCount; i++)
-        //        multiLineString.Geometries.Add(Read<LineString>());
-
-        //    return multiLineString;
-        //}
-
-        //private MultiPolygon ReadMultiPolygon(Dimension dimension)
-        //{
-        //    MultiPolygon multiPolygon = new MultiPolygon();
-
-        //    uint polygonCount = wkbReader.ReadUInt32();
-
-        //    for (int i = 0; i < polygonCount; i++)
-        //        multiPolygon.Geometries.Add(Read<Polygon>());
-
-        //    return multiPolygon;
-        //}
-
-        //private GeometryCollection ReadGeometryCollection(Dimension dimension)
-        //{
-        //    GeometryCollection geometryCollection = new GeometryCollection();
-
-        //    uint geometryCount = wkbReader.ReadUInt32();
-
-        //    for (int i = 0; i < geometryCount; i++)
-        //        geometryCollection.Geometries.Add(Read());
-
-        //    return geometryCollection;
-        //}
 
 
     }
