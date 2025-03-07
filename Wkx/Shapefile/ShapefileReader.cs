@@ -21,11 +21,25 @@ namespace Wkx
         {
         }
 
-
+        /// <summary>
+        /// Reads content section bytes of Shapefile Shape record (skipping first 8 bytes)
+        /// Can read Srid as Int32 by prefixing the bytearray with 5 bytes
+        /// composed of the Srid presence identifier 0xFE and 4 byte Int32 Srid (little endian)
+        /// </summary>
+        /// <returns>Geometry</returns>
+        /// <exception cref="NotSupportedException"></exception>
         internal new Geometry Read()
         {
             wkbReader.IsBigEndian = false;
-            var srid = wkbReader.ReadInt32();
+            int? srid = 0;
+            if (wkbReader.ReadByte() == 0xFE)
+            {
+                srid = wkbReader.ReadInt32();
+            }
+            else
+            {
+                wkbReader.BaseStream.Position = 0;
+            }
             var esriType = wkbReader.ReadInt32();
             var (geometryType, dimension) = GetGeometryType(esriType);
 
