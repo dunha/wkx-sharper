@@ -33,6 +33,17 @@ namespace Wkx
             return Activator.CreateInstance<T>().Deserialize(stream);
         }
 
+        public static Geometry Deserialize<T>(Stream stream, int srid) where T : ShapefileSerializer
+        {
+            return Activator.CreateInstance<T>().Deserialize(stream, srid);
+        }
+
+        public static Geometry Deserialize<T>(byte[] value, int srid) where T : ShapefileSerializer
+        {
+            using (MemoryStream stream = new MemoryStream(value))
+                return Deserialize<T>(stream, srid);
+        }
+
         public void Serialize<T>(Stream stream) where T : IGeometrySerializer
         {
             Activator.CreateInstance<T>().Serialize(this, stream);

@@ -13,6 +13,11 @@ namespace Wkx
             return new ShapefileReader(stream).Read();
         }
 
+        public Geometry Deserialize(Stream stream, int? srid = 0)
+        {
+            return new ShapefileReader(stream, srid).Read();
+        }
+
         public void Serialize(Geometry geometry, Stream stream)
         {
             byte[] buffer = new ShapefileWriter().Write(geometry);

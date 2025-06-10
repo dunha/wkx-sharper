@@ -15,10 +15,18 @@ namespace Wkx
     internal class ShapefileReader : WkbReader
     {
         private const double NODATAMAX = -1E+38;
+        int? Srid = 0;
+
 
         internal ShapefileReader(Stream stream)
             : base(stream)
         {
+        }
+
+        internal ShapefileReader(Stream stream, int? srid = 0)
+            : base(stream)
+        {
+            Srid = srid;
         }
 
         /// <summary>
@@ -31,15 +39,15 @@ namespace Wkx
         internal new Geometry Read()
         {
             wkbReader.IsBigEndian = false;
-            int? srid = 0;
-            if (wkbReader.ReadByte() == 0xFE)
-            {
-                srid = wkbReader.ReadInt32();
-            }
-            else
-            {
-                wkbReader.BaseStream.Position = 0;
-            }
+            ////int? srid = 0;
+            //if (wkbReader.ReadByte() == 0xFE)
+            //{
+            //    srid = wkbReader.ReadInt32();
+            //}
+            //else
+            //{
+            //    wkbReader.BaseStream.Position = 0;
+            //}
             var esriType = wkbReader.ReadInt32();
             var (geometryType, dimension) = GetGeometryType(esriType);
 
@@ -52,7 +60,7 @@ namespace Wkx
                 case GeometryType.MultiPoint: geometry = ReadMultiPoint(dimension); break;
                 default: throw new NotSupportedException(geometryType.ToString());
             }
-            geometry.Srid = srid;
+            geometry.Srid = Srid;
             return geometry;
         }
 
