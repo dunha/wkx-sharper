@@ -114,14 +114,22 @@ namespace Wkx
 
         private Point ReadPoint(Dimension dimension)
         {
+            Point point; 
             switch (dimension)
             {
-                case Dimension.Xy: return new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble());
-                case Dimension.Xyz: return new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble(), wkbReader.ReadDouble());
-                case Dimension.Xym: return new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble(), null, wkbReader.ReadDouble());
-                case Dimension.Xyzm: return new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble(), wkbReader.ReadDouble(), wkbReader.ReadDouble());
+                case Dimension.Xy: point = new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble()); break;
+                case Dimension.Xyz: point = new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble(), wkbReader.ReadDouble()); break;
+                case Dimension.Xym: point = new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble(), null, wkbReader.ReadDouble()); break;
+                case Dimension.Xyzm: point = new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble(), wkbReader.ReadDouble(), wkbReader.ReadDouble()); break;
+
+                //case Dimension.Xy: return new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble());
+                //case Dimension.Xyz: return new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble(), wkbReader.ReadDouble());
+                //case Dimension.Xym: return new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble(), null, wkbReader.ReadDouble());
+                //case Dimension.Xyzm: return new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble(), wkbReader.ReadDouble(), wkbReader.ReadDouble());
                 default: throw new NotSupportedException(dimension.ToString());
             }
+            point.Srid = Srid;
+            return point;
         }
 
 
@@ -207,6 +215,7 @@ namespace Wkx
                 }
 
             }
+            //points = points.Select(p => { p.Srid = Srid; return p; }).ToList();
             //record.WkxDimension = dimension;
             return (numParts, parts, points);
 

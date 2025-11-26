@@ -12,7 +12,7 @@ namespace Wkx
         {
             //wkbReader = new EndianBinaryReader(stream);
         }
-
+        int? srid;
 
         internal new Geometry Read()
         {
@@ -21,7 +21,7 @@ namespace Wkx
                 return ReadChildGeometry();
             int? geomStart = wkbReader.ReadByte();
             wkbReader.IsBigEndian = !wkbReader.ReadBoolean();
-            int? srid = wkbReader.ReadInt32();
+            srid = wkbReader.ReadInt32();
             _ = wkbReader.ReadDouble();
             _ = wkbReader.ReadDouble();
             _ = wkbReader.ReadDouble();
@@ -106,14 +106,17 @@ namespace Wkx
 
         private Point ReadPoint(Dimension dimension)
         {
+            Point point;
             switch (dimension)
             {
-                case Dimension.Xy: return new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble());
-                case Dimension.Xyz: return new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble(), wkbReader.ReadDouble());
-                case Dimension.Xym: return new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble(), null, wkbReader.ReadDouble());
-                case Dimension.Xyzm: return new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble(), wkbReader.ReadDouble(), wkbReader.ReadDouble());
+                case Dimension.Xy: point = new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble()); break;
+                case Dimension.Xyz: point = new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble(), wkbReader.ReadDouble()); break;
+                case Dimension.Xym: point = new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble(), null, wkbReader.ReadDouble()); break;
+                case Dimension.Xyzm: point = new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble(), wkbReader.ReadDouble(), wkbReader.ReadDouble()); break;
                 default: throw new NotSupportedException(dimension.ToString());
             }
+            point.Srid = srid;
+            return point;
         }
 
         private LineString ReadLineString(Dimension dimension)
