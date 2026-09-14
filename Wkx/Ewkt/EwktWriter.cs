@@ -4,7 +4,7 @@
     {
         internal override string Write(Geometry geometry, bool skipType = false)
         {
-            return string.Concat("SRID=", geometry.Srid, ";", base.Write(geometry, skipType));
+            return string.Concat("SRID=", geometry.Srid ?? 0, ";", base.Write(geometry, skipType));
         }
 
         protected override void WriteWktType(GeometryType geometryType, Dimension dimension, bool isEmpty, bool skipType = false)
