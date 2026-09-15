@@ -4,7 +4,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>0</Version>
     <Description>A WKT/WKB/EWKT/EWKB parser and serializer.</Description>
-    <Authors>Christian Schwarz</Authors>
+    <Authors>Christian Schwarz, Duncan Hall</Authors>
     <PackageTags>WKT WKB EWKT EWKB OGC Geometry Geography Spatial</PackageTags>
     <Copyright>Copyright 2017</Copyright>
     <PackageProjectUrl>https://github.com/cschwarz/wkx-sharp</PackageProjectUrl>
@@ -13,10 +13,4 @@
     <AssemblyVersion>1.1.10.0</AssemblyVersion>
     <FileVersion>1.1.10.0</FileVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="Shapefile\Shapefile.cs" />
-    <Compile Remove="Shapefile\ShapefileFlags.cs" />
-    <Compile Remove="Shapefile\ShapefileHeader.cs" />
-    <Compile Remove="Shapefile\ShapefileIndex.cs" />
-  </ItemGroup>
 </Project>
