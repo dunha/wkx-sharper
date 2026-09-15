@@ -1,15 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net48</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>0</Version>
     <Description>A WKT/WKB/EWKT/EWKB parser and serializer.</Description>
     <Authors>Christian Schwarz, Duncan Hall</Authors>
     <PackageTags>WKT WKB EWKT EWKB OGC Geometry Geography Spatial</PackageTags>
     <Copyright>Copyright 2017</Copyright>
-    <PackageProjectUrl>https://github.com/cschwarz/wkx-sharp</PackageProjectUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/cschwarz/wkx-sharp/master/LICENSE</PackageLicenseUrl>
-    <Company>Christian Schwarz</Company>
+    <PackageProjectUrl>https://github.com/dunha/wkx-sharper</PackageProjectUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/dunha/wkx-sharper/master/LICENSE</PackageLicenseUrl>
+    <Company></Company>
     <AssemblyVersion>1.1.10.0</AssemblyVersion>
     <FileVersion>1.1.10.0</FileVersion>
   </PropertyGroup>
