@@ -1,4 +1,4 @@
-wkx-sharp 
+wkx-sharper 
 ========
 
 A WKT/WKB/EWKT/EWKB parser and serializer with support for
@@ -20,7 +20,7 @@ A WKT/WKB/EWKT/EWKB parser and serializer with support for
 - Triangle
 
 
-This project was originally forked from [cschwarz/wkx-sharp](https://github.com/cschwarz/wkx-sharp) 
+This project was originally forked from [cschwarz/wkx-sharp](https://github.com/cschwarz/wkx-sharp) and renamed to indicate additional supported formats.
 
 It adds read/write support for Spatialite and Shapefile geometries.
 
