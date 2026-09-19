@@ -9,7 +9,7 @@ namespace Wkx
     /// Static convenience methods for serializing to WKX Geometry objects and deserializing from WKX Geometry objects <br/> 
     /// To and from WKT, EWKT, WKB, EWKB, Spatialite, and Shapefile formats. <br/>
     /// </summary>
-    public static class Serializer
+    public static class WkxSerializer
     {
 
         #region To Geometry	
